@@ -57,6 +57,17 @@ app.post('/SQBank', jsonParser, (req, res) => {
     })
 })
 
-// do the 'get' for see all accounts.
+// Get all accounts.
+app.get('/SQBank', function (req, res){
+    MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
+        console.log('Connected correctly to MongoDb')
+        let db = client.db('squamates')
+        let result = getDataFromDb(db, (documentsReturned) => {
+            console.log(documentsReturned)
+            res.json(documentsReturned)
+        })
+        client.close()
+    })
+});
 
 app.listen(port, () => console.log(`App is now listening on port ${port}`))
